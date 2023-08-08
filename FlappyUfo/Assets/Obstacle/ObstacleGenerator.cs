@@ -1,10 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Collections.Generic;
 
-public class TilemapGenerator : MonoBehaviour
+public class ObstacleGenerator : MonoBehaviour
 {
-    public Tilemap tilemap;
+    public GameObject ParentObject;
+    public Tilemap Tilemap;
     public TileBase baseTile;
     public TileBase terrainTile;
     public TileBase upperLayerTile;
@@ -21,14 +23,18 @@ public class TilemapGenerator : MonoBehaviour
     {
         GenerateTilemap();
     }
-
-    void GenerateTilemap()
+    public void SetSeed(int seed)
+    {
+        seed = seed;
+    }
+    public void GenerateTilemap()
     {
         Random.InitState(seed);
+        float randomAmplitude = amplitude + Random.Range(-1f, 1f);
         GenerateBaseLayer();
-        GenerateUpperLayer(6, 3);
-        GenerateUpperLayer(6, 0);
-        GenerateUpperLayer(12, 6);
+        GenerateUpperLayer(6, 3, randomAmplitude);
+        GenerateUpperLayer(6, 0, randomAmplitude);
+        GenerateUpperLayer(12, 6, randomAmplitude);
     }
 
     void GenerateBaseLayer()
@@ -38,16 +44,16 @@ public class TilemapGenerator : MonoBehaviour
             for (int y = 0; y < mapHeight * 1.5f; y++)
             {
                 Vector3Int basePosition = new Vector3Int(x, y, 1);
-                tilemap.SetTile(basePosition, baseTile);
+                Tilemap.SetTile(basePosition, baseTile);
             }
         }
     }
 
-    void GenerateUpperLayer(int zLayer, int offset)
+    void GenerateUpperLayer(int zLayer, int offset, float randomAmplitude)
     {
         for (int x = 0; x < mapWidth; x++)
         {
-            float yTop = amplitude * Mathf.Sin(frequency * x);
+            float yTop = randomAmplitude * Mathf.Sin(frequency * x);
             int startYTop = Mathf.FloorToInt(yTop + mapHeight + offset);
 
             for (int y = startYTop; y < mapHeight * 1.5f; y++)
@@ -56,11 +62,10 @@ public class TilemapGenerator : MonoBehaviour
                 if (noiseValue > terrainThreshold)
                 {
                     Vector3Int terrainPosition = new Vector3Int(x, y, zLayer);
-                    tilemap.SetTile(terrainPosition, terrainTile);
+                    Tilemap.SetTile(terrainPosition, terrainTile);
                 }
             }
         }
     }
-
 
 }
