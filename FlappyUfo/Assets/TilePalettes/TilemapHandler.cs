@@ -47,10 +47,12 @@ public class TilemapHandler : MonoBehaviour
             tilemapObjects[i] = tilemapObject;
         }
 
-        tilemapObjects[currentTilemapIndex].SetActive(true);
+        tilemapObjects[0].SetActive(true);
+        tilemapObjects[1].SetActive(true);
+        tilemapObjects[1].transform.position = new Vector3(35.91089f, -10.6f, 0.01f);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         timer += Time.deltaTime;
 
@@ -68,7 +70,7 @@ public class TilemapHandler : MonoBehaviour
             float angleInRadians = Mathf.Deg2Rad * 30f;
             float moveX = TIleMapMoveDistance * Mathf.Cos(angleInRadians);
             float moveY = TIleMapMoveDistance * Mathf.Sin(angleInRadians);
-            newTilemap.transform.position = previousTilemap.transform.position + new Vector3(moveX, moveY, 0.1f);
+            newTilemap.transform.position = previousTilemap.transform.position + new Vector3(moveX, moveY, 0.01f);
 
             newTilemap.SetActive(true);
 
