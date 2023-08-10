@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class Finish : MonoBehaviour
+public class GameSceneManager : MonoBehaviour
 {
     // Start is called before the first frame update
     public bool IsFinised = false;

@@ -8,7 +8,7 @@ public class TilemapHandler : MonoBehaviour
     public GameObject TilemapParent;
 /*    public int startSeed = 43;
 */    
-    public int TileMapsNumber = 5;
+    public int TileMapsNumber = 17;
     public float TIleMapSpawnInterval = 1f;
     public float TIleMapReturnInterval = 2f;
     public float TIleMapMoveDistance = 0f;
@@ -39,6 +39,8 @@ public class TilemapHandler : MonoBehaviour
         }*/
     private void Start()
     {
+        tilemapObjects = new GameObject[TileMapsNumber];
+
         for (int i = 0; i < TileMapsNumber; i++)
         {
             GameObject tilemapObject = ObjectPoolManager.SpawnObjects(TilemapPrefab, new Vector3(5.6f, -28.1f, 0f), Quaternion.identity, TilemapParent);

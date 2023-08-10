@@ -7,22 +7,32 @@ using UnityEngine;
 public class CameraWork : MonoBehaviour
 {
     public float CameraFollowSpeed = 2f;
-    public Vector3 offset;
+    public Vector3 CameraOffset;
     public Vector3 CameraMinValues, CameraMaxValues;
-    public Transform CameraFollowTarget;
-    public Canvas pointCount;
-
+    public GameObject CameraFollowTarget;
+    public Canvas Score;
+    
     // Update is called once per frame
     void FixedUpdate()
     {
         Follow();
-        pointCount.transform.position = new Vector3(transform.position.x, transform.position.y, -14);
+
+        // update score position
+        Score.transform.position = new Vector3(transform.position.x, transform.position.y, -14);
+        
+        // if playe rgoes out of camera bounds
+        if(Mathf.Abs(transform.position.y - CameraFollowTarget.transform.position.y) > 18)
+        {
+            CameraFollowTarget.GetComponent<Player>().IsPlayerDead = true;
+        }
+
+        Debug.Log($"{Mathf.Abs(transform.position.y - CameraFollowTarget.transform.position.y)}");
     }
 
     private void Follow()
     {
-        Vector3 targetPosition = CameraFollowTarget.position + offset;
-        float angleInRadians = Mathf.Deg2Rad * 30f;
+        Vector3 targetPosition = CameraFollowTarget.transform.position + CameraOffset;
+        float angleInRadians = Mathf.Deg2Rad * 28f;
         float moveX = 5f * Mathf.Cos(angleInRadians) * Time.fixedDeltaTime;
         float moveY = 5.5f * Mathf.Sin(angleInRadians) * Time.fixedDeltaTime;
 

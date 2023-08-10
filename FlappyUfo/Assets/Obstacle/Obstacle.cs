@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         transform.parent.gameObject.GetComponent<Obstacles>().obstacleCount++;
