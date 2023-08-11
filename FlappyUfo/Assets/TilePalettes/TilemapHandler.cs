@@ -17,26 +17,6 @@ public class TilemapHandler : MonoBehaviour
     private int currentTilemapIndex = 0;
     private float timer = 0f;
 
-    /*    private void Start()
-        {
-            for (int i = 0; i < TileMapsNumber; i++)
-            {
-                int seed = startSeed + i;
-                GameObject tilemapObject = ObjectPoolManager.SpawnObjects(TilemapPrefab, new Vector3(5.6f, -28.1f, 0f), Quaternion.identity, TilemapPrefab.GetComponent<TilemapGenerator>().ParentObject);
-
-                TilemapGenerator tilemapGenerator = tilemapObject.GetComponent<TilemapGenerator>();
-                if (tilemapGenerator != null)
-                {
-                    tilemapGenerator.SetSeed(seed);
-                    tilemapGenerator.GenerateTilemap();
-                }
-                tilemapObject.SetActive(false);
-
-                tilemapObjects[i] = tilemapObject;
-            }
-
-            tilemapObjects[currentTilemapIndex].SetActive(true);
-        }*/
     private void Start()
     {
         tilemapObjects = new GameObject[TileMapsNumber];

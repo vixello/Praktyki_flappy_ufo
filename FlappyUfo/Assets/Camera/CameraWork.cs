@@ -20,13 +20,11 @@ public class CameraWork : MonoBehaviour
         // update score position
         Score.transform.position = new Vector3(transform.position.x, transform.position.y, -14);
         
-        // if playe rgoes out of camera bounds
+        // if playe rgoes out of camera bounds, game over
         if(Mathf.Abs(transform.position.y - CameraFollowTarget.transform.position.y) > 18)
         {
             CameraFollowTarget.GetComponent<Player>().IsPlayerDead = true;
         }
-
-        Debug.Log($"{Mathf.Abs(transform.position.y - CameraFollowTarget.transform.position.y)}");
     }
 
     private void Follow()

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class TouchManager : MonoBehaviour
 {
@@ -10,30 +11,42 @@ public class TouchManager : MonoBehaviour
     [SerializeField]
     private GameObject player;
     private PlayerInput playerInput;
+    private AudioManager audioManager;
 
     private InputAction touchTapAction;
     Rigidbody2D playerRigidbody;
+    private AudioSource jumpAudioSource;
 
     private void Awake()
     {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+/*        jumpAudioSource = audioManager.transform.Find("sfx").GetComponent<AudioSource>();
+*/
         playerInput = GetComponent<PlayerInput>();
-        touchTapAction = playerInput.actions.FindAction("TouchTap");
+        touchTapAction = playerInput.actions.FindAction("TouchPress");
         playerRigidbody = player.GetComponent<Rigidbody2D>();
     }
 
     private void OnEnable()
     {
-        touchTapAction.performed += TouchTap;
+        touchTapAction.performed += TouchPress;
     }
 
     private void OnDisable()
     {
-        touchTapAction.performed -= TouchTap;
+        touchTapAction.performed -= TouchPress;
     }
 
-    private void TouchTap(InputAction.CallbackContext context)
+    private void TouchPress(InputAction.CallbackContext context)
     {
-        float value = context.ReadValue<float>();
+
+        if (!player.GetComponent<Player>().IsPlayerDead)
+        {
+            audioManager.PlaySoundEffects(audioManager.jumpSound);
+        }
         playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, flapForce);
+
     }
+
+
 }

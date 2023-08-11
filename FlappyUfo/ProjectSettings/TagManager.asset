@@ -8,6 +8,8 @@ TagManager:
   - ScoreText
   - CanvasScore
   - ObstacleCollider
+  - AudioManager
+  - sfx
   layers:
   - Default
   - TransparentFX

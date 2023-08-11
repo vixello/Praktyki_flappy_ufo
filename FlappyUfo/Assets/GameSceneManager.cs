@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,24 +9,34 @@ public class GameSceneManager : MonoBehaviour
 {
     // Start is called before the first frame update
     public bool IsFinised = false;
+    public GameOverScreen GameOverScreen;
     public Camera camera;
+    [SerializeField] private TextMeshProUGUI playerScore;
     private void FixedUpdate()
     {
         if (IsFinised)
         {
-            camera.GetComponent<CameraWork>().CameraFollowSpeed = 0f;
-            StartCoroutine(RepeatLevel());
+            GameOver();
         }
     }
-    private void LoadLevelAgain()
+    public void GameOver()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        string playerScorestring = playerScore.text;
+        if (!PlayerPrefs.HasKey("Score")|| int.Parse(playerScorestring)> PlayerPrefs.GetInt("Score"))
+        {
+            PlayerPrefs.SetInt("Score", int.Parse(playerScorestring));
+        }
+        camera.GetComponent<CameraWork>().CameraFollowSpeed = 0f;
+        GameOverScreen.ShowGameOverScreen( int.Parse(playerScorestring), PlayerPrefs.GetInt("Score"));
     }
-    private IEnumerator RepeatLevel()
+    public void PlayGame()
     {
-        yield return new WaitForSeconds(2);
+        SceneManager.LoadSceneAsync(1);
+    }
 
-        LoadLevelAgain();
-        yield return null;
+    public void QuitGame()
+    {
+        Application.Quit();
     }
+
 }
