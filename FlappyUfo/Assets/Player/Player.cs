@@ -4,7 +4,7 @@ public class Player : MonoBehaviour
 {
     public bool IsPlayerDead = false;
     public Animator Animator;
-    public GameObject Finish;
+    public GameObject GameSceneManager;
 
     private void FixedUpdate()
     {
@@ -26,6 +26,6 @@ public class Player : MonoBehaviour
     {
         Animator.SetBool("isDead", true);
         GetComponent<PlayerMovement>().StopMoving();
-        Finish.GetComponent<GameSceneManager>().IsFinised = true;
+        GameSceneManager.GetComponent<GameSceneManager>().IsFinised = true;
     }
 }

@@ -19,6 +19,7 @@ public class ObstacleHandler : MonoBehaviour
 
     private GameObject[] ObstacleObjects = new GameObject[10];
     private int currentObstacleIndex = 0;
+    private bool isFinished = false;
     private float timer = 0f;
     private float offset;
     private void Start()
@@ -38,6 +39,16 @@ public class ObstacleHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
+        isFinished = FindFirstObjectByType<GameSceneManager>().GetComponent<GameSceneManager>().IsFinised;
+        if (!isFinished)
+        {
+            GenerateObstacle();
+        }
+
+    }
+
+    public void GenerateObstacle()
+    {
         timer += Time.deltaTime;
 
         if (timer >= ObstacleSpawnInterval)
@@ -49,21 +60,16 @@ public class ObstacleHandler : MonoBehaviour
             currentObstacleIndex = (currentObstacleIndex + 1) % ObstaclesNumber;
 
             GameObject newObstacle = ObstacleObjects[currentObstacleIndex];
-            /*            newObstacle.transform.position = previousObstacle.transform.position + new Vector3(ObstacleMoveDistance, ObstacleMoveDistance, 0.1f);
-            */
+
             float angleInRadians = Mathf.Deg2Rad * 30f;
             float moveX = ObstacleMoveDistance * Mathf.Cos(angleInRadians);
             float moveY = ObstacleMoveDistance * Mathf.Sin(angleInRadians);
 
-            /*            Vector3 offset = new Vector3(moveX * currentObstacleIndex, moveY * currentObstacleIndex, 0f);
-            */
-            /*            newObstacle.transform.position =  new Vector3(previousObstacle.transform.position.x + moveX, moveY, -0.01f);
-            */
-            // Add randomness to Y-axis within a range (-RandomnessDown to RandomnessUp)
+            // Adding randomness to Y-axis within a range (-RandomnessDown to RandomnessUp)
             float randomYOffset = Random.Range(-RandomnessDown, RandomnessUp);
 
-            // Ensure the Y value doesn't go over a certain limit
-            float minYLimit = Mathf.Abs(Camera.transform.position.y) - 25;
+            // Ensureing that the Y value doesn't go over a certain limit
+            float minYLimit = Mathf.Abs(Camera.transform.position.y) - 5;
             float maxYLimit = Mathf.Abs(Camera.transform.position.y) + 10;
 
             float newY = previousObstacle.transform.position.y + moveY + randomYOffset;
@@ -71,7 +77,7 @@ public class ObstacleHandler : MonoBehaviour
             // Clamp newY to stay within the specified Y limits
             newY = Mathf.Clamp(newY, minYLimit, maxYLimit);
 
-            // Apply the new position
+            // Position of the next obstacle
             newObstacle.transform.position = new Vector3(previousObstacle.transform.position.x + moveX, newY, -0.01f);
 
             newObstacle.SetActive(true);
@@ -79,8 +85,9 @@ public class ObstacleHandler : MonoBehaviour
             StartCoroutine(DeactivatePreviousObstacle(previousObstacle));
         }
     }
-    //* Random.Range(RandomnessDown, RandomnessUp);
-    private IEnumerator DeactivatePreviousObstacle(GameObject ObstacleToDeactivate)
+
+        //* Random.Range(RandomnessDown, RandomnessUp);
+        private IEnumerator DeactivatePreviousObstacle(GameObject ObstacleToDeactivate)
     {
         yield return new WaitForSeconds(ObstacleReturnInterval);
 
